@@ -15,8 +15,8 @@ import MinTFramework.Network.NetworkType;
 public class Smartboard extends MinT{
     
     public Smartboard(){
-        //new frame
-        //mint -> request -> frame
+        new frame
+        mint -> request -> frame
         this.addNetwork(NetworkType.UDP);
     }
     
