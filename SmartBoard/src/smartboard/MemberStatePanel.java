@@ -5,6 +5,7 @@
  */
 package smartboard;
 
+import java.awt.Font;
 import javax.swing.JFrame;
 
 /**
@@ -30,14 +31,9 @@ public class MemberStatePanel extends javax.swing.JPanel {
         this.setSize(800, 480);
         iob = (InOutBoard) parent;
         this.rname = rname;
-        rnameLabel.setText(rname);
-        info = db.getResearInfo(rname);
-        String email = info.getEmail();
-        System.out.println(rname+"의 email은"+email);
-        String state = db.getCurrentState(info.getState());
-        rstateLabel.setText(state);
-        emailLabel.setText(email);
-        System.out.println("ViewData : " + state );
+   
+       info = new Researcherinfo(rname);
+       viewData(info);
     }
 
     /**
@@ -45,11 +41,18 @@ public class MemberStatePanel extends javax.swing.JPanel {
      */
     public void viewData(Researcherinfo info) {
 
+        info = db.getResearInfo(rname);
+         rnameLabel.setText(rname);
+        rnameLabel.setFont(new Font("굴림",Font.PLAIN,40));
         String email = info.getEmail();
+        System.out.println(rname+"의 email은"+email);
         String state = db.getCurrentState(info.getState());
         rstateLabel.setText(state);
+        rstateLabel.setFont(new Font("굴림", Font.PLAIN, 40));
+
         emailLabel.setText(email);
-        System.out.print("ViewData" + email + state);
+        emailLabel.setFont(new Font("굴림",Font.PLAIN,40));
+        System.out.println("ViewData : " + state );
     }
 
     /**
@@ -126,26 +129,27 @@ public class MemberStatePanel extends javax.swing.JPanel {
         jPanel2Layout.setHorizontalGroup(
             jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel2Layout.createSequentialGroup()
-                .addGap(169, 169, 169)
-                .addComponent(rstateLabel)
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-            .addGroup(jPanel2Layout.createSequentialGroup()
-                .addGap(88, 88, 88)
-                .addComponent(rnameLabel)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 213, Short.MAX_VALUE)
-                .addComponent(emailLabel)
-                .addGap(147, 147, 147))
+                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(jPanel2Layout.createSequentialGroup()
+                        .addGap(32, 32, 32)
+                        .addComponent(rnameLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 190, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(44, 44, 44)
+                        .addComponent(emailLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 205, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(jPanel2Layout.createSequentialGroup()
+                        .addGap(141, 141, 141)
+                        .addComponent(rstateLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 177, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                .addContainerGap(77, Short.MAX_VALUE))
         );
         jPanel2Layout.setVerticalGroup(
             jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel2Layout.createSequentialGroup()
-                .addGap(64, 64, 64)
+                .addGap(34, 34, 34)
                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(rnameLabel)
-                    .addComponent(emailLabel))
+                    .addComponent(rnameLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 53, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(emailLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 53, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addComponent(rstateLabel)
-                .addGap(55, 55, 55))
+                .addComponent(rstateLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 52, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(23, 23, 23))
         );
 
         home.setText("HOME");
@@ -226,7 +230,7 @@ public class MemberStatePanel extends javax.swing.JPanel {
 
     private void sendMessageActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_sendMessageActionPerformed
         if (evt.getSource() == sendMessage) {
-            SendMessage sm = new SendMessage(iob);
+            SendMessage sm = new SendMessage(iob,rname);
             iob.changePanel(sm);
         }
     }//GEN-LAST:event_sendMessageActionPerformed

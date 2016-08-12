@@ -24,10 +24,11 @@ public class MainPanelManualConfiguired extends JPanel {
     GridBagConstraints gbc;
     InOutBoard iob = null;
     DBconnector db;
-    
+    Researcherinfo info;
     public int buttonNum;
     //String rname;
     ArrayList<String> rname = new ArrayList<String>();
+    ArrayList<String> rstate = new ArrayList<String>();
 
     /**
      * Creates new form MainPanel
@@ -81,55 +82,44 @@ public class MainPanelManualConfiguired extends JPanel {
 
         labelPanel.add(jLabel1);
         this.add(labelPanel, BorderLayout.NORTH);
+            
         ButtonAdd();
-//        JButton[] jbtn = new JButton[buttonNum];
-//        for (int i = 0; i < buttonNum; i++) {
-//            namePanel.add(jbtn[i] = new JButton(rname.get(i)));
-////            add(jbtn[i] = new JButton(rname.get(i)));
-//        }
         System.out.println("in Main Pannel : " + rname);
 
-//        setVisible(true);
-//        setSize(800,480);
         namePanel.setVisible(true);
         namePanel.setSize(800, 300);
         namePanel.setBorder(new EtchedBorder(EtchedBorder.LOWERED));
         this.add(namePanel, BorderLayout.CENTER);
-        //layout(labelPanel,1,1,3,1);
-        //layout(namePanel,0,2,5,5);
         super.setVisible(true);
 
     }
 
     public void ButtonAdd() {
+       
         db = new DBconnector();
         rname = db.getResearcherName();
         buttonNum = rname.size();
         JButton[] jbtn = new JButton[buttonNum];
-//        int x=0;
-//        int y=0;
-//        int width=0;
-//        int height=0;
-//        for (int i = 0; i < buttonNum; i++) {
-//            namePanel.add(jbtn[i] = new JButton(rname.get(i)));
-//        }
+        
         System.out.println("in Main Pannel : " + rname);
 
         for (int i = 0; i < buttonNum; i++) {
-            namePanel.add(jbtn[i] = new JButton(rname.get(i)));
+            //Researcherinfo info = new Researcherinfo(rname.get(i));
+            Researcherinfo info=db.getResearInfo(rname.get(i));
+            String[] state = new String[buttonNum];
+            db.getResearInfo(rname.get(i));
+            state[i]=db.getCurrentState(info.getState());
+            
+            namePanel.add(jbtn[i] = new JButton());
+            jbtn[i].setText(rname.get(i)+""+state[i]);
             jbtn[i].setVisible(true);
             jbtn[i].setSize(20, 20);
             super.setVisible(true);
-            jbtn[i].setPreferredSize(new Dimension(200, 100));
-            jbtn[i].setFont(new Font("굴림", Font.PLAIN, 40));
+            jbtn[i].setPreferredSize(new Dimension(250, 120));
+            jbtn[i].setFont(new Font("굴림", Font.PLAIN, 20));
             jbtn[i].repaint();
             jbtn[i].addActionListener(new ResearcherButtonActionListener(jbtn, iob));
-//            layout(jbtn[i],x,y,width,height);
-//            x++;
-//            y++;
-//            width++;
-//            height++;
-//            //System.out.println(rname);
+
         }
 
     }
@@ -161,12 +151,13 @@ public class MainPanelManualConfiguired extends JPanel {
             //buttonnum = jbtn.length;
             if (iob == null){
                 System.out.println("IOB IS NULL");
+                return;
             }
             for(JButton bt : jbtn){
                 if(e.getSource().equals(bt)){
-                    String rname = bt.getText();
+                    String rname = bt.getText().substring(0, 3);
                     System.out.println("ResearcherButtonActionListener: rname is "+rname);
-                    iob.changePanel(new MemberStatePanel(iob, rname));
+                    iob.changePanel(new SendMessage(iob, rname));
                     break;
                 }
             }

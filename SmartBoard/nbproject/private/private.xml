@@ -3,18 +3,15 @@
     <editor-bookmarks xmlns="http://www.netbeans.org/ns/editor-bookmarks/2" lastBookmarkId="0"/>
     <open-files xmlns="http://www.netbeans.org/ns/projectui-open-files/2">
         <group>
-            <file>file:/C:/Users/Shin/Documents/NetBeansProjects/SmartBoard/src/smartboard/InOutBoard.java</file>
-            <file>file:/C:/Users/Shin/Documents/NetBeansProjects/SmartBoard/src/smartboard/DBconnector.java</file>
-            <file>file:/C:/Users/Shin/Documents/NetBeansProjects/SmartBoard/src/smartboard/InputStudent.java</file>
-            <file>file:/C:/Users/Shin/Documents/NetBeansProjects/SmartBoard/src/smartboard/Researcherinfo.java</file>
-            <file>file:/C:/Users/Shin/Documents/NetBeansProjects/SmartBoard/src/smartboard/PurposePanel.java</file>
-            <file>file:/C:/Users/Shin/Documents/NetBeansProjects/SmartBoard/src/smartboard/MainPanel.java</file>
-            <file>file:/C:/Users/Shin/Documents/NetBeansProjects/SmartBoard/build.xml</file>
-            <file>file:/C:/Users/Shin/Documents/NetBeansProjects/SmartBoard/src/smartboard/SendMessage.java</file>
-            <file>file:/C:/Users/Shin/Documents/NetBeansProjects/SmartBoard/src/smartboard/Smartboard.java</file>
-            <file>file:/C:/Users/Shin/Documents/NetBeansProjects/SmartBoard/src/smartboard/MainPanelManualConfiguired.java</file>
-            <file>file:/C:/Users/Shin/Documents/NetBeansProjects/SmartBoard/src/smartboard/MemberStatePanel.java</file>
-            <file>file:/C:/Users/Shin/Documents/NetBeansProjects/SmartBoard/src/smartboard/MessageBox.java</file>
+            <file>file:/D:/developer/SmartInOutBoardSystem/SmartBoard/src/smartboard/MainPanel.java</file>
+            <file>file:/D:/developer/SmartInOutBoardSystem/SmartBoard/src/smartboard/DBconnector.java</file>
+            <file>file:/D:/developer/SmartInOutBoardSystem/SmartBoard/src/smartboard/InOutBoard.java</file>
+            <file>file:/D:/developer/SmartInOutBoardSystem/SmartBoard/src/smartboard/SendMessage.java</file>
+            <file>file:/D:/developer/SmartInOutBoardSystem/SmartBoard/src/smartboard/Smartboard.java</file>
+            <file>file:/D:/developer/SmartInOutBoardSystem/SmartBoard/src/smartboard/MemberStatePanel.java</file>
+            <file>file:/D:/developer/SmartInOutBoardSystem/SmartBoard/src/smartboard/Researcherinfo.java</file>
+            <file>file:/D:/developer/SmartInOutBoardSystem/SmartBoard/src/smartboard/MessageBox.java</file>
+            <file>file:/D:/developer/SmartInOutBoardSystem/SmartBoard/src/smartboard/MainPanelManualConfiguired.java</file>
         </group>
     </open-files>
 </project-private>

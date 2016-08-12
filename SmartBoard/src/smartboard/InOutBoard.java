@@ -34,7 +34,7 @@ public class InOutBoard extends JFrame {
         GraphicsEnvironment ge = GraphicsEnvironment.getLocalGraphicsEnvironment();
         device = ge.getDefaultScreenDevice();
         device.setFullScreenWindow(this);
-
+//        this.setVisible(true);
         this.setSize(800, 480);
         this.getContentPane().removeAll();
         
@@ -52,7 +52,7 @@ public class InOutBoard extends JFrame {
         this.repaint();
     }
 
-    public void changePanel(JPanel p) {
+     public void changePanel(JPanel p) {
 
         this.getContentPane().removeAll();
         this.getContentPane().add(p);

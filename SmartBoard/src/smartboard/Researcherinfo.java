@@ -16,6 +16,7 @@ public class Researcherinfo {
 	private String rnumber;
 	private String email;
         private int state;
+        private int lectureid;
 	
         
 	public Researcherinfo(String rname){
@@ -60,6 +61,12 @@ public class Researcherinfo {
 	}
 	public void setState(int state) {
 		this.state = state;
+	}
+	  public int getLectureId() {
+		return lectureid;
+	}
+	public void setLectureId(int lectureid) {
+		this.lectureid = lectureid;
 	}
 	
 	public String toString() {

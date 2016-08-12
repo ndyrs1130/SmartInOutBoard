@@ -13,6 +13,7 @@ import javax.swing.table.DefaultTableModel;
 
 //DB 처리
 public class DBconnector {
+    
 
     String snameMessage, rnameMessage, puridMessage;
     String snumber, sname, totalStudent,remail;
@@ -21,7 +22,7 @@ public class DBconnector {
     private static final String DRIVER
             = "com.mysql.jdbc.Driver";
     private static final String URL
-            = "jdbc:mysql://210.115.47.193:3306/";
+            = "jdbc:mysql://210.115.47.194:3306/";
 
     private static final String USER = "sjshin"; //DB ID
     private static final String PASS = "snslab"; //DB 패스워드
@@ -77,12 +78,13 @@ public class DBconnector {
         ResultSet rs = null;
         try{
             con = getConn();
-            String sql = "select rname,csid,email from inoutboard.researcher where  rname = "+"'"+rname+"'";
+            String sql = "select lectureid,csid from inoutboard.researcher where rname like "+"'"+rname+"'";
             ps = con.prepareStatement(sql);
             rs = ps.executeQuery();
             if(rs.next()){
+                info.setLectureId(rs.getInt(1));
                 info.setState(rs.getInt(2));
-                info.setEmail(rs.getString(3));
+                //info.setEmail(rs.getString(3));
             }
         }
         catch(Exception e){
@@ -91,30 +93,49 @@ public class DBconnector {
         return info;
 
     }
-   
-    
-    /**
-     * 연구원의 조교수업을 반환해줌
-     */
-    public int getResarcherLecture(String rname){
+   public ArrayList<String> getResearcherInfo(){
         Connection con = null;
         PreparedStatement ps = null;
-        try{
+        ArrayList<String> rename = new ArrayList<String>();
+           try{
             con = getConn();
-            String sql = "select lectureid from inoutboard.researcher where rname = "+"'"+rname+"'";
+            String sql = "select rname from inoutboard.researcher";
             ps = con.prepareStatement(sql);
             ResultSet rs = ps.executeQuery(sql);
-            if(rs.next()){
-            lectureid = rs.getInt(1);
-            }
-            System.out.println(lectureid);
-      
-            
-       }catch(Exception e){
+            while(rs.next()){
+                rename.add(rs.getString(1));
+                        }
+                System.out.print(rename);
+        }
+           catch(Exception e){
 			e.printStackTrace();
 		}
-        return lectureid;
+ 
+        return rename;
     }
+    
+//    /**
+//     * 연구원의 조교수업을 반환해줌
+//     */
+//    public int getResarcherLecture(String rname){
+//        Connection con = null;
+//        PreparedStatement ps = null;
+//        try{
+//            con = getConn();
+//            String sql = "select lectureid from inoutboard.researcher where rname = "+"'"+rname+"'";
+//            ps = con.prepareStatement(sql);
+//            ResultSet rs = ps.executeQuery(sql);
+//            if(rs.next()){
+//            lectureid = rs.getInt(1);
+//            }
+//            System.out.println(lectureid);
+//      
+//            
+//       }catch(Exception e){
+//			e.printStackTrace();
+//		}
+//        return lectureid;
+//    }
     /**
      * lectureid를 주면 id에 있는 과목이름을 가져온다 
      */
@@ -127,15 +148,16 @@ public class DBconnector {
         lecturemap = new HashMap<>();
 
         try {
+            System.out.println("lec id : "+lectureid);
             con = getConn();
             //String sql = "select sname,rname,purid from inoutboard.messagebox";
            // String sql = "select * from inoutboard.lecture";
-            String sql = "select lecture from inoutboard.lecture where lectureid = "+Integer.toString(lectureid);
+            String sql = "select lecture from inoutboard.lecture where lectureid = "+lectureid;
             ps = con.prepareStatement(sql);
             ResultSet rs = ps.executeQuery(sql);
             if(rs.next()){
-            lname = rs.getString(1);
-            System.out.println(lectureid+"에 해당하는 수업은 "+lname);
+                lname = rs.getString(1);
+                System.out.println(lectureid+"에 해당하는 수업은 "+lname);
             }
         } catch (Exception e) {
             e.printStackTrace();
@@ -163,7 +185,7 @@ public class DBconnector {
             ResultSet rs = ps.executeQuery(sql);
             if(rs.next()){
             state = rs.getString(1);
-            System.out.println(lectureid+"에 해당하는 수업은 "+state);
+            System.out.println(csid+"에 해당하는 수업은 "+state);
             }
         } catch (Exception e) {
             e.printStackTrace();

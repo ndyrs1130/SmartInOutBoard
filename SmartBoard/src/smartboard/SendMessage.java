@@ -5,7 +5,9 @@
  */
 package smartboard;
 
+import javax.swing.DefaultComboBoxModel;
 import javax.swing.DefaultListModel;
+import javax.swing.JComboBox;
 import javax.swing.JFrame;
 import javax.swing.JList;
 
@@ -18,8 +20,9 @@ public class SendMessage extends javax.swing.JPanel {
     DefaultListModel model;
     DBconnector db;
     InOutBoard iob;
-    MainPanel mp;
-    String lecture;
+    MainPanelManualConfiguired mp;
+   Researcherinfo rinfo;
+    String rname;
     //MessageBox mi;
     /**
      * Creates new form SnedMessage
@@ -27,46 +30,25 @@ public class SendMessage extends javax.swing.JPanel {
     public SendMessage() {
         initComponents();
     }
-    public SendMessage(JFrame parent){
+    public SendMessage(JFrame parent,String rname){
         
         initComponents();
         
-        db = new DBconnector();
-        //mi = new MessageBox();
-        mp = new MainPanel();
         this.setSize(800,480);
         iob = (InOutBoard)parent;
-        //studentListfill();
+        this.rname = rname;
         
-        //fillLectureList(mp.rname); 
-        
-        
-    }
-    /**
-     * 강의리스트에 연구원의 조교수업을 채운다 
-     */
-    public void fillLectureList(String researcherName){
-       
         db = new DBconnector();
-        lecture = db.getLecture(db.getResarcherLecture(researcherName));
-        lecturelist = new JList(new DefaultListModel());
-        model = (DefaultListModel)lecturelist.getModel();
-        model.addElement(lecture);
-        //return lecture;
+        System.out.println("rname : "+rname);
+        rinfo = db.getResearInfo(rname);
+        String lecture = db.getLecture(rinfo.getLectureId());
+        System.out.println("lecture name : "+lecture);
+        //String[] lecturearr = {lecture};
+        lectureCombo.addItem(lecture);
+        
     }
-    
-    public String studentListfill(String researcherName, String lectureName){
-        String totalStudentList,snumber,sname;
-        //db.insertStudent(mi);
-        studentList = new JList(new DefaultListModel());
-        model = (DefaultListModel)studentList.getModel();
-        snumber = db.snumber;
-        sname = db.sname;
-        totalStudentList = snumber + " " +sname;
-        model.addElement(totalStudentList);
-        return totalStudentList;
-    }
-    
+   
+
 
     /**
      * This method is called from within the constructor to initialize the form.
@@ -78,51 +60,49 @@ public class SendMessage extends javax.swing.JPanel {
     private void initComponents() {
 
         jPanel1 = new javax.swing.JPanel();
-        jScrollPane1 = new javax.swing.JScrollPane();
-        lecturelist = new javax.swing.JList<>();
         jLabel1 = new javax.swing.JLabel();
+        lectureCombo = new javax.swing.JComboBox();
         jPanel2 = new javax.swing.JPanel();
-        jScrollPane2 = new javax.swing.JScrollPane();
-        studentList = new javax.swing.JList<>();
         jLabel2 = new javax.swing.JLabel();
+        studentCombo = new javax.swing.JComboBox();
         jPanel3 = new javax.swing.JPanel();
-        jScrollPane3 = new javax.swing.JScrollPane();
-        purposeList = new javax.swing.JList<>();
         jLabel3 = new javax.swing.JLabel();
+        purposeCombo = new javax.swing.JComboBox();
         jPanel4 = new javax.swing.JPanel();
         homeButton = new javax.swing.JButton();
         backButton = new javax.swing.JButton();
         send = new javax.swing.JButton();
 
-        jScrollPane1.setViewportView(lecturelist);
-
         jLabel1.setText("강의");
+
+        lectureCombo.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                lectureComboActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
         jPanel1Layout.setHorizontalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel1Layout.createSequentialGroup()
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addGap(23, 23, 23)
-                        .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 174, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addGap(52, 52, 52)
-                        .addComponent(jLabel1)))
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addGap(52, 52, 52)
+                .addComponent(jLabel1)
+                .addContainerGap(133, Short.MAX_VALUE))
+            .addGroup(jPanel1Layout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(lectureCombo, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addContainerGap())
         );
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
                 .addGap(32, 32, 32)
                 .addComponent(jLabel1)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(18, 18, 18))
+                .addGap(33, 33, 33)
+                .addComponent(lectureCombo, javax.swing.GroupLayout.PREFERRED_SIZE, 82, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(39, Short.MAX_VALUE))
         );
-
-        jScrollPane2.setViewportView(studentList);
 
         jLabel2.setText("학생정보");
 
@@ -130,23 +110,24 @@ public class SendMessage extends javax.swing.JPanel {
         jPanel2.setLayout(jPanel2Layout);
         jPanel2Layout.setHorizontalGroup(
             jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jScrollPane2)
             .addGroup(jPanel2Layout.createSequentialGroup()
                 .addGap(25, 25, 25)
                 .addComponent(jLabel2)
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addContainerGap(262, Short.MAX_VALUE))
+            .addGroup(jPanel2Layout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(studentCombo, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addContainerGap())
         );
         jPanel2Layout.setVerticalGroup(
             jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel2Layout.createSequentialGroup()
                 .addGap(28, 28, 28)
                 .addComponent(jLabel2)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(20, 20, 20))
+                .addGap(35, 35, 35)
+                .addComponent(studentCombo, javax.swing.GroupLayout.PREFERRED_SIZE, 81, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
-
-        jScrollPane3.setViewportView(purposeList);
 
         jLabel3.setText("용무");
 
@@ -157,10 +138,10 @@ public class SendMessage extends javax.swing.JPanel {
             .addGroup(jPanel3Layout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jScrollPane3, javax.swing.GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE)
+                    .addComponent(purposeCombo, 0, 151, Short.MAX_VALUE)
                     .addGroup(jPanel3Layout.createSequentialGroup()
                         .addComponent(jLabel3)
-                        .addGap(0, 127, Short.MAX_VALUE)))
+                        .addGap(0, 0, Short.MAX_VALUE)))
                 .addContainerGap())
         );
         jPanel3Layout.setVerticalGroup(
@@ -168,9 +149,9 @@ public class SendMessage extends javax.swing.JPanel {
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel3Layout.createSequentialGroup()
                 .addGap(29, 29, 29)
                 .addComponent(jLabel3)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jScrollPane3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(51, Short.MAX_VALUE))
+                .addGap(38, 38, 38)
+                .addComponent(purposeCombo, javax.swing.GroupLayout.PREFERRED_SIZE, 76, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(73, Short.MAX_VALUE))
         );
 
         homeButton.setText("HOME");
@@ -247,12 +228,22 @@ public class SendMessage extends javax.swing.JPanel {
     }// </editor-fold>//GEN-END:initComponents
 
     private void homeButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_homeButtonActionPerformed
-        // TODO add your handling code here:
+        if(evt.getSource()==homeButton){
+        mp = new MainPanelManualConfiguired(iob);
+        iob.changePanel(mp);
+        }
     }//GEN-LAST:event_homeButtonActionPerformed
 
     private void backButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_backButtonActionPerformed
-        // TODO add your handling code here:
+        if (evt.getSource() == backButton) {
+            MainPanelManualConfiguired mp = new MainPanelManualConfiguired(iob);
+            iob.changePanel(mp);
+        }
     }//GEN-LAST:event_backButtonActionPerformed
+
+    private void lectureComboActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_lectureComboActionPerformed
+        
+    }//GEN-LAST:event_lectureComboActionPerformed
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
@@ -265,12 +256,9 @@ public class SendMessage extends javax.swing.JPanel {
     private javax.swing.JPanel jPanel2;
     private javax.swing.JPanel jPanel3;
     private javax.swing.JPanel jPanel4;
-    private javax.swing.JScrollPane jScrollPane1;
-    private javax.swing.JScrollPane jScrollPane2;
-    private javax.swing.JScrollPane jScrollPane3;
-    private javax.swing.JList<String> lecturelist;
-    private javax.swing.JList<String> purposeList;
+    private javax.swing.JComboBox lectureCombo;
+    private javax.swing.JComboBox purposeCombo;
     private javax.swing.JButton send;
-    private javax.swing.JList<String> studentList;
+    private javax.swing.JComboBox studentCombo;
     // End of variables declaration//GEN-END:variables
 }
