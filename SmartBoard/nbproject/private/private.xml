@@ -3,15 +3,16 @@
     <editor-bookmarks xmlns="http://www.netbeans.org/ns/editor-bookmarks/2" lastBookmarkId="0"/>
     <open-files xmlns="http://www.netbeans.org/ns/projectui-open-files/2">
         <group>
-            <file>file:/D:/developer/SmartInOutBoardSystem/SmartBoard/src/smartboard/MainPanel.java</file>
-            <file>file:/D:/developer/SmartInOutBoardSystem/SmartBoard/src/smartboard/DBconnector.java</file>
-            <file>file:/D:/developer/SmartInOutBoardSystem/SmartBoard/src/smartboard/InOutBoard.java</file>
-            <file>file:/D:/developer/SmartInOutBoardSystem/SmartBoard/src/smartboard/SendMessage.java</file>
-            <file>file:/D:/developer/SmartInOutBoardSystem/SmartBoard/src/smartboard/Smartboard.java</file>
-            <file>file:/D:/developer/SmartInOutBoardSystem/SmartBoard/src/smartboard/MemberStatePanel.java</file>
-            <file>file:/D:/developer/SmartInOutBoardSystem/SmartBoard/src/smartboard/Researcherinfo.java</file>
-            <file>file:/D:/developer/SmartInOutBoardSystem/SmartBoard/src/smartboard/MessageBox.java</file>
-            <file>file:/D:/developer/SmartInOutBoardSystem/SmartBoard/src/smartboard/MainPanelManualConfiguired.java</file>
+            <file>file:/F:/SmartInOutBoard/SmartBoard/src/smartboard/DBconnector.java</file>
+            <file>file:/F:/SmartInOutBoard/SmartBoard/src/smartboard/Purposeinfo.java</file>
+            <file>file:/F:/SmartInOutBoard/SmartBoard/src/smartboard/SendMessagePanel.java</file>
+            <file>file:/F:/SmartInOutBoard/SmartBoard/src/smartboard/Researcherinfo.java</file>
+            <file>file:/F:/SmartInOutBoard/SmartBoard/src/smartboard/Lectureinfo.java</file>
+            <file>file:/F:/SmartInOutBoard/SmartBoard/src/smartboard/MainPanelManualConfiguired.java</file>
+            <file>file:/F:/SmartInOutBoard/SmartBoard/src/smartboard/InOutBoard.java</file>
+            <file>file:/F:/SmartInOutBoard/SmartBoard/src/smartboard/StudentInfo.java</file>
+            <file>file:/F:/SmartInOutBoard/SmartBoard/src/smartboard/MessageBox.java</file>
+            <file>file:/F:/SmartInOutBoard/SmartBoard/src/smartboard/Smartboard.java</file>
         </group>
     </open-files>
 </project-private>

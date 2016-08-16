@@ -11,9 +11,11 @@ import java.awt.GraphicsEnvironment;
 import java.awt.GridLayout;
 import java.awt.Point;
 import java.awt.Toolkit;
+import java.util.ArrayList;
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
+import jdk.nashorn.internal.objects.NativeRegExp;
 
 /**
  *
@@ -23,18 +25,24 @@ public class InOutBoard extends JFrame {
 
     //protected MainPanel p1 = new MainPanel(this);
     protected MainPanelManualConfiguired p1 = new MainPanelManualConfiguired(this);
+    ArrayList<Researcherinfo> researcherinfolist = new ArrayList<>();
+    ArrayList<StudentInfo> studentinfolist = new ArrayList<>();
+    ArrayList<Lectureinfo> lectureinfolist = new ArrayList<>();
+    ArrayList<Purposeinfo> purposeinfolist = new ArrayList<>();
+   
     private GraphicsDevice device;
+    DBconnector db = new DBconnector();
 
     /**
      * Creates new form NewJFrame
      */
     public InOutBoard() {
         initComponents();
-
-        GraphicsEnvironment ge = GraphicsEnvironment.getLocalGraphicsEnvironment();
-        device = ge.getDefaultScreenDevice();
-        device.setFullScreenWindow(this);
-//        this.setVisible(true);
+        databaseInit();
+//        GraphicsEnvironment ge = GraphicsEnvironment.getLocalGraphicsEnvironment();
+//        device = ge.getDefaultScreenDevice();
+//        device.setFullScreenWindow(this);
+        this.setVisible(true);
         this.setSize(800, 480);
         this.getContentPane().removeAll();
         
@@ -51,7 +59,15 @@ public class InOutBoard extends JFrame {
         this.revalidate();
         this.repaint();
     }
-
+    
+     private void databaseInit(){
+         researcherinfolist = db.getResearcherInfo();
+         studentinfolist = db.getStudentInfo();
+         lectureinfolist = db.getLectureList();
+         purposeinfolist = db.getPurposeinfo();
+        // System.out.println(researcherinfolist);
+         
+     }
      public void changePanel(JPanel p) {
 
         this.getContentPane().removeAll();
@@ -137,6 +153,7 @@ public class InOutBoard extends JFrame {
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
+                
                 InOutBoard ib = new InOutBoard();
 //                Toolkit tk = Toolkit.getDefaultToolkit();
 //                Cursor invisCursor = tk.createCustomCursor(tk.createImage(""), new Point(), null);

@@ -10,68 +10,79 @@ package smartboard;
  * @author Shin
  */
 public class Researcherinfo {
-        private String rid;
-	private String rpwd;
-	private String rname;
-	private String rnumber;
-	private String email;
-        private int state;
-        private int lectureid;
-	
-        
-	public Researcherinfo(String rname){
-            this.rname = rname;
-        }
-        
-        
-	public String getId() {
-		return rid;
-	}
-	public void setId(String rid) {
-		this.rid = rid;
-	}
-	public String getPwd() {
-		return rpwd;
-	}
 
-	public void setPwd(String rpwd) {
-		this.rpwd = rpwd;
-	}
-	public String getName() {
-		return rname;
-	}
-	public void setName(String rname) {
-		this.rname = rname;
-	}
-	public String getNumber() {
-		return rnumber;
-	}
-	public void setNumber(String rnumber) {
-		this.rnumber = rnumber;
-	}
+    private int rid;
+    private String loginid;
+    private String rname;
+    private int rnumber;
+    private String email;
+    private String state;
+    private int lectureid;
 
-	public String getEmail() {
-		return email;
-	}
-	public void setEmail(String email) {
-		this.email = email;
-	}
-        public int getState() {
-		return state;
-	}
-	public void setState(int state) {
-		this.state = state;
-	}
-	  public int getLectureId() {
-		return lectureid;
-	}
-	public void setLectureId(int lectureid) {
-		this.lectureid = lectureid;
-	}
-	
-	public String toString() {
-		return "Memberinfo [id=" + rid + ", pwd=" + rpwd + ", name=" + rname
-				+ ", snumber=" + rnumber + ",email=" + email
-				+ "]";
-	}
+    public Researcherinfo(int rid, String loginid, String rname, int rnumber, String email, int lectureid, String state) {
+        
+        this.rid = rid;
+        this.loginid = loginid;
+        this.rname = rname;
+        this.rnumber = rnumber;
+        this.email = email;
+        this.lectureid = lectureid;
+        this.state = state;
+
+    }
+
+    public int getId() {
+        return rid;
+    }
+
+
+    public String getLoginId() {
+        return loginid;
+    }
+
+    public String getName() {
+        return rname;
+    }
+
+    public void setName(String rname) {
+        this.rname = rname;
+    }
+
+    public int getNumber() {
+        return rnumber;
+    }
+
+    public void setNumber(int rnumber) {
+        this.rnumber = rnumber;
+    }
+
+    public String getEmail() {
+        return email;
+    }
+
+    public void setEmail(String email) {
+        this.email = email;
+    }
+
+    public String getState() {
+        return state;
+    }
+
+    public void setState(String state) {
+        this.state = state;
+    }
+
+    public int getLectureId() {
+        return lectureid;
+    }
+
+    public void setLectureId(int lectureid) {
+        this.lectureid = lectureid;
+    }
+
+    public String toString() {
+        return "Memberinfo [id=" + rid + ", name=" + rname
+                + ", snumber=" + rnumber + ",email=" + email
+                + "]";
+    }
 }
