@@ -15,7 +15,7 @@ public class DBconnector {
 	private static final String DRIVER
 		= "com.mysql.jdbc.Driver";
 	private static final String URL
-		= "jdbc:mysql://210.115.47.193:3306/";
+		= "jdbc:mysql://210.115.47.194:3306/";
 	
 	private static final String USER = "sjshin"; //DB ID
 	private static final String PASS = "snslab"; //DB 패스워드
@@ -48,7 +48,7 @@ public class DBconnector {
 		try{
 			
 			con = getConn();
-			String sql = "insert into inoutboard.researcher (rid,rpwd,rname,rnumber,email) values (?,?,?,?,?)";
+			String sql = "insert into inoutboard.researcher (loginid,loginpwd,rname,rnumber,email) values (?,?,?,?,?)";
 	
                         ps = con.prepareStatement(sql);
 			ps.setString(1, dto.getId());
@@ -82,7 +82,7 @@ public class DBconnector {
 		
 		try{
 			con = getConn();
-			String sql = "select rid, rpwd,rname from inoutboard.researcher";
+			String sql = "select loginid, loginpwd,rname from inoutboard.researcher";
 			
 			ps = con.prepareStatement(sql);
 			ResultSet rs = ps.executeQuery(sql);
