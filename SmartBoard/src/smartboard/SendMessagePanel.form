@@ -221,6 +221,9 @@
           <Properties>
             <Property name="text" type="java.lang.String" value="&#xbcf4;&#xb0b4;&#xae30;"/>
           </Properties>
+          <Events>
+            <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="sendActionPerformed"/>
+          </Events>
         </Component>
       </SubComponents>
     </Container>

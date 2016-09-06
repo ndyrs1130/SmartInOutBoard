@@ -17,7 +17,7 @@ import javax.swing.border.EtchedBorder;
  * @author Shin
  */
 public class MainPanelManualConfiguired extends JPanel {
-
+    int count = 0;
     Container ct;
     GridBagConstraints c;
     GridBagLayout gb;
@@ -161,10 +161,10 @@ public class MainPanelManualConfiguired extends JPanel {
     class ResearcherButtonActionListener implements ActionListener {
 
         JButton[] jbtn;
-
+        DBconnector db;
         InOutBoard iob = null;
         MainPanelManualConfiguired mainpanel;
-
+        ArrayList <String> statearray = new ArrayList<>();
         public ResearcherButtonActionListener(JButton[] jbtn, InOutBoard iob) {
             super();
             this.jbtn = jbtn;
@@ -173,15 +173,29 @@ public class MainPanelManualConfiguired extends JPanel {
 
         @Override
         public void actionPerformed(ActionEvent e) {
-
+           db = new DBconnector(); 
             if (iob == null) {
                 System.out.println("IOB IS NULL");
                 return;
             }
+            
+            for(int j = 0; j<allinfo.size();j++){
+                statearray.add(allinfo.get(j).getState());
+            }
+             
             for (int i = 0; i < buttonNum; i++) {
                 if (e.getSource().equals(jbtn[i])) {
+                    
                     String rname = allinfo.get(i).getName();
+                    
+                    
                     System.out.println("ResearcherButtonActionListener: rname is " + rname);
+                    /**
+                     * 버튼을 계속 누르게 되면 연구원 상태가 디비에 저장된 현황만큼 변함 
+                    jbtn[i].setText(rname + "  " +statearray.get(count));
+                    count++;
+                    count = count%3;
+                  **/
                     iob.changePanel(new SendMessagePanel(iob, i));
                     break;
                 }

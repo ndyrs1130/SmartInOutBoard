@@ -10,15 +10,16 @@ package smartboard;
  * @author Shin
  */
 public class MessageBox {
-    private String msgid;
+    private int msgid;
     private String sname;
-    private String rname;
-    private String msgcheck;
-    private String purid;
-    public String getMsgId() {
+    private int rid;
+    private int msgcheck;
+    private String purposestring;
+    private String lecturename;
+    public int getMsgId() {
 		return msgid;
 	}
-	public void setMsgid(String msgid) {
+	public void setMsgid(int msgid) {
 		this.msgid = msgid;
 	}
 	public String getSname() {
@@ -28,24 +29,30 @@ public class MessageBox {
 	public void setSname(String sname) {
 		this.sname = sname;
 	}
-	public String getRname() {
-		return rname;
+	public int getRid() {
+		return rid;
 	}
-	public void setRname(String rname) {
-		this.rname = rname;
+	public void setRid(int rid) {
+		this.rid = rid;
 	}
-	public String getMsgcheck() {
+	public int getMsgcheck() {
 		return msgcheck;
 	}
-	public void setMsgcheck(String msgcheck) {
+	public void setMsgcheck(int msgcheck) {
 		this.msgcheck = msgcheck;
 	}
 
-	public String getPurid() {
-		return purid;
+	public String getPurposeString() {
+		return purposestring;
 	}
-	public void setPurid(String purid) {
-		this.purid = purid;
+	public void setPurposeString(String purposestring) {
+		this.purposestring = purposestring;
+	}
+        public String getLecturename() {
+		return lecturename;
+	}
+	public void setLecturename(String lecturename) {
+		this.lecturename = lecturename;
 	}
 	public String toString() {
 		return "";

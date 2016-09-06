@@ -11,15 +11,17 @@ import javax.swing.DefaultListModel;
 import javax.swing.JComboBox;
 import javax.swing.JFrame;
 import javax.swing.JList;
+import javax.swing.JOptionPane;
 
 /**
  *
  * @author Shin
  */
 public class SendMessagePanel extends javax.swing.JPanel {
+
     ArrayList<String> studentList = new ArrayList<>();
     ArrayList<String> contentList = new ArrayList<>();
-    
+
     //ArrayList<StudentInfo> studentList = new ArrayList<>();
     //static ArrayList<Researcherinfo> researcherinfolist = new ArrayList<>();
     DefaultListModel model;
@@ -30,7 +32,8 @@ public class SendMessagePanel extends javax.swing.JPanel {
     int lectureid;
     String lecture;
     int rid;
-    
+    int purposeRid;
+
     //MessageBox mi;
     /**
      * Creates new form SnedMessage
@@ -40,7 +43,7 @@ public class SendMessagePanel extends javax.swing.JPanel {
     }
 
     public SendMessagePanel(JFrame parent, int researcherindex) {
-
+        
         initComponents();
         this.setSize(800, 480);
         iob = (InOutBoard) parent;
@@ -51,39 +54,87 @@ public class SendMessagePanel extends javax.swing.JPanel {
         //연구원의 정보를 받아 조교하는 수업의 콤보박스를 채운다
         System.out.println("sendmessage LectureID: " + iob.researcherinfolist.get(researcherindex).getLectureId());
         lectureid = iob.researcherinfolist.get(researcherindex).getLectureId();
-        lectureCombo.addItem(iob.lectureinfolist.get(lectureid).getLecture()+" "+iob.lectureinfolist.get(lectureid).getSeperateclass()+"분반");
-        
+        lectureCombo.addItem(iob.lectureinfolist.get(lectureid).getLecture() + " " + iob.lectureinfolist.get(lectureid).getSeperateclass() + "분반");
+
         //jPanel1.add(lectureCombo);
-        
         //조교하는 수업의 학생을 콤보박스에 채운다
-        for (int i = 0;i<iob.studentinfolist.size();i++) {
+        for (int i = 0; i < iob.studentinfolist.size(); i++) {
             iob.studentinfolist.get(i);
-            int stulectureid=iob.studentinfolist.get(i).getLectureID();
-            if(lectureid==stulectureid){
-                studentList.add(iob.studentinfolist.get(i).getSname()+" "+iob.studentinfolist.get(i).getSnumber());
-               
+            int stulectureid = iob.studentinfolist.get(i).getLectureID();
+            if (lectureid == stulectureid) {
+                studentList.add(iob.studentinfolist.get(i).getSname() + " " + iob.studentinfolist.get(i).getSnumber());
+
             }
         }
-        for(int i = 0;i<studentList.size();i++){
+        for (int i = 0; i < studentList.size(); i++) {
             studentCombo.addItem(studentList.get(i));
             System.out.println(studentList.get(i));
         }
         //용무를 콤보박스에 채운다
-        for(int i = 0; i<iob.purposeinfolist.size();i++){
-            
-        rid = iob.researcherinfolist.get(researcherindex).getId();
-            int purposeRid = iob.purposeinfolist.get(i).getrId();
-            if(rid==purposeRid){
+        for (int i = 0; i < iob.purposeinfolist.size(); i++) {
+
+            rid = iob.researcherinfolist.get(researcherindex).getId();
+            purposeRid = iob.purposeinfolist.get(i).getrId();
+            if (rid == purposeRid) {
                 contentList.add(iob.purposeinfolist.get(i).getContent());
-                
+
             }
         }
-        for(int i = 0;i<contentList.size();i++){
+        for (int i = 0; i < contentList.size(); i++) {
             purposeCombo.addItem(contentList.get(i));
             System.out.println(contentList.get(i));
         }
-        
+
     }
+    private boolean sendMessage(){
+        MessageBox mb = getViewData();
+        DBconnector db = new DBconnector();
+        boolean ok = db.sendMessage(mb);
+        if(ok){
+            System.out.println("메시지 전송 성공");
+            return true;
+        } else {
+            System.out.println("메시지 전송 실패");
+            return false;
+        }
+    }
+//    private boolean insertMember() {
+//
+//        //화면에서 사용자가 입력한 내용을 얻는다.
+//        MessageBox mb = getViewData();
+//        DBconnector db = new DBconnector();
+//        boolean ok = db.send(mb);
+//
+//        if (ok) {
+//
+//            JOptionPane.showMessageDialog(this, "가입이 완료되었습니다.");
+//            //dispose();
+//            return true;
+//
+//        } else {
+//
+//            JOptionPane.showMessageDialog(this, "가입이 정상적으로 처리되지 않았습니다.");
+//            return false;
+//        }
+//
+//    }//insertMember
+
+    public MessageBox getViewData() {
+
+        //화면에서 사용자가 입력한 내용을 얻는다.
+        MessageBox mb = new MessageBox();
+        //dto에 담는다.
+        String lecture = lectureCombo.getSelectedItem().toString();
+        String student = studentCombo.getSelectedItem().toString();
+        String purpose = purposeCombo.getSelectedItem().toString();
+        mb.setRid(rid);
+        mb.setSname(student);
+        mb.setLecturename(lecture);
+        mb.setPurposeString(purpose);
+
+        return mb;
+    }
+
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -202,6 +253,11 @@ public class SendMessagePanel extends javax.swing.JPanel {
         });
 
         send.setText("보내기");
+        send.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                sendActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout jPanel4Layout = new javax.swing.GroupLayout(jPanel4);
         jPanel4.setLayout(jPanel4Layout);
@@ -274,6 +330,15 @@ public class SendMessagePanel extends javax.swing.JPanel {
     private void lectureComboActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_lectureComboActionPerformed
 
     }//GEN-LAST:event_lectureComboActionPerformed
+
+    private void sendActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_sendActionPerformed
+        if (evt.getSource() == send) {
+            if (sendMessage()) {
+            //if (insertMember()) {
+                System.out.println("sendMessage() 호출 종료");
+            }
+        }
+    }//GEN-LAST:event_sendActionPerformed
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables

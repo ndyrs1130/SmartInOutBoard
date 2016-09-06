@@ -1,11 +1,16 @@
-/*
+ /*
  * To change this license header, choose License Headers in Project Properties.
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
 package smartboard;
 
-import java.sql.*;
+//import java.sql.*;
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Vector;
@@ -31,15 +36,15 @@ public class DBconnector {
     
     private Connection con;
     private static final String DRIVER
-            = "com.mysql.jdbc.Driver";
-    private static final String URL
-            = "jdbc:mysql://210.115.47.194:3306/";
+            = "SQLite.JDBCDriver";
+    private static final String URL = "jdbc:sqlite://home/pi/smartboard.db";
+    //private static final String URL = "jdbc:sqlite:/smartboard.db";
 
-    private static final String USER = "sjshin"; //DB ID
-    private static final String PASS = "snslab"; //DB 패스워드
+    private static final String USER = "pi"; //DB ID
+    private static final String PASS = "raspberry"; //DB 패스워드
     String str1, str2;
 
-    public DBconnector() {
+    public DBconnector() {        
         con = getConn();
     }
 
@@ -47,8 +52,8 @@ public class DBconnector {
     private Connection getConn() {
         Connection con = null;
         try {
-            Class.forName(DRIVER); //1. 드라이버 로딩
-            con = DriverManager.getConnection(URL, USER, PASS); //2. 드라이버 연결
+            Class.forName(DRIVER).newInstance(); //1. 드라이버 로딩
+            con = DriverManager.getConnection(URL); //2. 드라이버 연결
             System.out.println("DBConnection Success!");
 
         } catch (Exception e) {
@@ -68,10 +73,10 @@ public class DBconnector {
         try {
 
             //상태 종류를 불러옴
-            String sql1 = "select * from inoutboard.currentstate";
+            String sql1 = "select * from currentstate";
             ps = con.prepareStatement(sql1);
             ResultSet rs = ps.executeQuery(sql1);
-            stateList.add("DUMMY");
+     
             while (rs.next()) {
                 stateList.add(rs.getString(2));
 
@@ -79,7 +84,7 @@ public class DBconnector {
             System.out.println(stateList);
 
             //연구원 정보를 불러옴
-            String sql = "select * from inoutboard.researcher";
+            String sql = "select * from researcher";
             ps = con.prepareStatement(sql);
             rs = ps.executeQuery(sql);
             while (rs.next()) {
@@ -101,7 +106,7 @@ public class DBconnector {
         try {
 
             //학생 정보를 불러옴
-            String sql = "select * from inoutboard.student";
+            String sql = "select * from student";
             ps = con.prepareStatement(sql);
             ResultSet rs = ps.executeQuery(sql);
             while (rs.next()) {
@@ -126,7 +131,7 @@ public class DBconnector {
         PreparedStatement ps = null;
         try {
             //강의 정보를 불러옴
-            String sql = "select * from inoutboard.lecture";
+            String sql = "select * from lecture";
             ps = con.prepareStatement(sql);
             ResultSet rs = ps.executeQuery(sql);
  
@@ -151,7 +156,7 @@ public class DBconnector {
         try {
 
             //용무 종류를 불러옴
-            String sql1 = "select * from inoutboard.purpose";
+            String sql1 = "select * from purpose";
             ps = con.prepareStatement(sql1);
             ResultSet rs = ps.executeQuery(sql1);
 
@@ -162,7 +167,7 @@ public class DBconnector {
             System.out.println(purposeList);
 
             //연구원 정보를 불러옴
-            String sql = "select * from inoutboard.studentpurpose";
+            String sql = "select * from studentpurpose";
             ps = con.prepareStatement(sql);
             rs = ps.executeQuery(sql);
             while (rs.next()) {
@@ -176,5 +181,44 @@ public class DBconnector {
         System.out.println("purposeinfoList 사이즈는" + purposeinfoList.size());
         return purposeinfoList;
     }
+    public boolean sendMessage(MessageBox mb){
+	
+		boolean ok = false;
+		
+		Connection con = null; 		 //연결
+		PreparedStatement ps = null; //명령
+		
+		try{
+			
+			con = getConn();
+			String sql = "insert into messagebox (sname,rid,content,lecture,msgcheck,msgid) values (?,?,?,?,?,null)";
+	
+                        ps = con.prepareStatement(sql);
+			ps.setString(1, mb.getSname());
+			ps.setInt(2, mb.getRid());
+			ps.setString(3,mb.getPurposeString());
+			ps.setString(4, mb.getLecturename());
+                        ps.setInt(5, 0);
+			
+		
+					
+			int r = ps.executeUpdate(); //실행 -> 저장
+			
+			
+			if(r>0){
+				System.out.println("보내기 성공");	
+				ok=true;
+			}else{
+				System.out.println("보내기 실패");
+			}
+			
+				
+			
+		}catch(Exception e){
+			e.printStackTrace();
+		}
+		
+		return ok;
+	}
 
 }
