@@ -5,6 +5,15 @@
  */
 package pc;
 
+import ExternelNetwork.LoginService;
+import MinTFramework.MinT;
+import MinTFramework.Network.NetworkProfile;
+import MinTFramework.Network.NetworkType;
+import MinTFramework.Network.RecvMSG;
+import MinTFramework.Network.Request;
+import MinTFramework.Network.ResponseData;
+import MinTFramework.Network.ResponseHandler;
+import java.nio.charset.Charset;
 import javax.swing.JFrame;
 import javax.swing.JOptionPane;
 
@@ -13,19 +22,26 @@ import javax.swing.JOptionPane;
  * @author Shin
  */
 public class LoginPanel extends javax.swing.JPanel {
+
     NewJFrame mainFrame;
+    LoginPanel lp;
+    MinT frame;
+
     /**
      * Creates new form LoginPanel
      */
     public LoginPanel() {
         initComponents();
-        this.setSize(500, 500);
+        this.setSize(520, 200);
     }
+
     public LoginPanel(NewJFrame mainFrame) {
         //initComponents();
         initComponents();
         this.setSize(500, 500);
         this.mainFrame = mainFrame;
+        this.lp = this;
+
     }
 
     /**
@@ -37,7 +53,6 @@ public class LoginPanel extends javax.swing.JPanel {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
-        jLabel1 = new javax.swing.JLabel();
         jTextField1 = new javax.swing.JTextField();
         jLabel2 = new javax.swing.JLabel();
         jLabel3 = new javax.swing.JLabel();
@@ -45,7 +60,11 @@ public class LoginPanel extends javax.swing.JPanel {
         loginButton = new javax.swing.JButton();
         joinButton = new javax.swing.JButton();
 
-        jLabel1.setText("연구원PC프로그램");
+        jTextField1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jTextField1ActionPerformed(evt);
+            }
+        });
 
         jLabel2.setText("ID");
 
@@ -72,80 +91,94 @@ public class LoginPanel extends javax.swing.JPanel {
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addGap(153, 153, 153)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(layout.createSequentialGroup()
-                        .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 189, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                        .addGap(57, 57, 57)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addComponent(jLabel2, javax.swing.GroupLayout.PREFERRED_SIZE, 51, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addComponent(jLabel3, javax.swing.GroupLayout.PREFERRED_SIZE, 60, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addGap(47, 47, 47)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                            .addComponent(jTextField2, javax.swing.GroupLayout.DEFAULT_SIZE, 269, Short.MAX_VALUE)
-                            .addComponent(jTextField1))
-                        .addGap(188, 188, 188))))
-            .addGroup(layout.createSequentialGroup()
-                .addGap(202, 202, 202)
-                .addComponent(loginButton)
-                .addGap(125, 125, 125)
-                .addComponent(joinButton)
-                .addGap(0, 267, Short.MAX_VALUE))
+                            .addComponent(jTextField2)
+                            .addComponent(jTextField1, javax.swing.GroupLayout.PREFERRED_SIZE, 269, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                    .addGroup(layout.createSequentialGroup()
+                        .addGap(199, 199, 199)
+                        .addComponent(loginButton)
+                        .addGap(76, 76, 76)
+                        .addComponent(joinButton)))
+                .addContainerGap(154, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addGap(24, 24, 24)
-                .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 46, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(77, 77, 77)
+                .addGap(23, 23, 23)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(jTextField1, javax.swing.GroupLayout.PREFERRED_SIZE, 38, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jLabel2, javax.swing.GroupLayout.PREFERRED_SIZE, 54, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(layout.createSequentialGroup()
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 15, Short.MAX_VALUE)
-                        .addComponent(jTextField2, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(18, 18, 18))
-                    .addGroup(layout.createSequentialGroup()
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(jLabel3, javax.swing.GroupLayout.PREFERRED_SIZE, 49, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jLabel3, javax.swing.GroupLayout.PREFERRED_SIZE, 49, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jTextField2, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(18, 18, 18)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(loginButton)
                     .addComponent(joinButton))
-                .addContainerGap(38, Short.MAX_VALUE))
+                .addContainerGap(168, Short.MAX_VALUE))
         );
     }// </editor-fold>//GEN-END:initComponents
 
     private void loginButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_loginButtonActionPerformed
         if (evt.getSource() == loginButton) {
-            //System.out.println("Called login button");
+            frame = MinT.getInstance();
+            LoginService ls = new LoginService("LoginService", jTextField1.getText(), jTextField2.getText(), mainFrame, lp);
+            frame.executeService(ls);
 
-            DBconnector dao = new DBconnector();
-            MainPanel mp = new MainPanel();
-            dao.loginMember();
-            
-            if (dao.rid.equals(jTextField1.getText()) && dao.rpwd.equals((jTextField2.getText()))) {
-                mainFrame.changePanel(mp);
-                mainFrame.setSize(1000, mainFrame.HEIGHT);
-            } else {
-                JOptionPane.showMessageDialog(this, "로그인 실패!!!");
-            }
+//            System.out.println("Packet Go Go Sing");
+//            MinT frame;
+//            frame = MinT.getInstance();
+//            NetworkProfile dst = new NetworkProfile("server", "210.115.49.38:6513", NetworkType.UDP);
+//          
+//            frame.REQUEST_GET(dst, new Request("LoginResource", jTextField1.getText() + "|" + jTextField2.getText()), new ResponseHandler() {
+//                @Override
+//                public void Response(ResponseData rd) {
+//                    MainPanel mp = new MainPanel();
+//                    System.out.println("Response data: " + rd.getResourceString());
+//
+//                    if (rd.getResourceString().equals("0.0")) {
+//                        mainFrame.changePanel(mp);
+//                        mainFrame.setSize(1000, mainFrame.HEIGHT);
+//                    } else {
+//                        JOptionPane.showMessageDialog(lp, "로그인 실패!!!");
+//                    }
+//                }
+//            });
+//            DBconnector dao = new DBconnector();
+//            MainPanel mp = new MainPanel();
+//            dao.loginMember();
+//            
+//            if (dao.rid.equals(jTextField1.getText()) && dao.rpwd.equals((jTextField2.getText()))) {
+//                mainFrame.changePanel(mp);
+//                mainFrame.setSize(1000, mainFrame.HEIGHT);
+//            } else {
+//                JOptionPane.showMessageDialog(this, "로그인 실패!!!");
+//            }
         }
     }//GEN-LAST:event_loginButtonActionPerformed
 
     private void joinButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_joinButtonActionPerformed
         if (evt.getSource() == joinButton) {
             JoinPanel jp = new JoinPanel(mainFrame, this);
-            
+
             mainFrame.changePanel(jp);
         }
     }//GEN-LAST:event_joinButtonActionPerformed
 
+    private void jTextField1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jTextField1ActionPerformed
+       
+    }//GEN-LAST:event_jTextField1ActionPerformed
+
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
     private javax.swing.JTextField jTextField1;

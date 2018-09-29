@@ -5,7 +5,9 @@
  */
 package smartboard;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import javax.swing.DefaultComboBoxModel;
 import javax.swing.DefaultListModel;
 import javax.swing.JComboBox;
@@ -28,11 +30,13 @@ public class SendMessagePanel extends javax.swing.JPanel {
     InOutBoard iob;
     MainPanelManualConfiguired mp;
     Researcherinfo rinfo;
+    MessageBox mb;
     int researcherindex;
     int lectureid;
     String lecture;
     int rid;
     int purposeRid;
+    String dateTime;
 
     //MessageBox mi;
     /**
@@ -43,7 +47,7 @@ public class SendMessagePanel extends javax.swing.JPanel {
     }
 
     public SendMessagePanel(JFrame parent, int researcherindex) {
-        
+
         initComponents();
         this.setSize(800, 480);
         iob = (InOutBoard) parent;
@@ -72,9 +76,10 @@ public class SendMessagePanel extends javax.swing.JPanel {
         }
         //용무를 콤보박스에 채운다
         for (int i = 0; i < iob.purposeinfolist.size(); i++) {
-
+            
             rid = iob.researcherinfolist.get(researcherindex).getId();
             purposeRid = iob.purposeinfolist.get(i).getrId();
+            System.out.println("rid:"+rid+"/ purposeRid:"+purposeRid+"/ purposeContents:"+iob.purposeinfolist.get(i).getContent());
             if (rid == purposeRid) {
                 contentList.add(iob.purposeinfolist.get(i).getContent());
 
@@ -86,53 +91,39 @@ public class SendMessagePanel extends javax.swing.JPanel {
         }
 
     }
-    private boolean sendMessage(){
-        MessageBox mb = getViewData();
+
+    private boolean sendMessage() {
+        mb = getViewData();
         DBconnector db = new DBconnector();
         boolean ok = db.sendMessage(mb);
-        if(ok){
+
+        if (ok) {
+            JOptionPane.showMessageDialog(this, "메시지가 전송되었습니다");
+            InOutBoard.getInstance().messageboxlist = db.getMessageBoxinfo();
+
             System.out.println("메시지 전송 성공");
             return true;
         } else {
+            JOptionPane.showMessageDialog(this, "메시지 전송이 실패되었습니다");
             System.out.println("메시지 전송 실패");
             return false;
         }
     }
-//    private boolean insertMember() {
-//
-//        //화면에서 사용자가 입력한 내용을 얻는다.
-//        MessageBox mb = getViewData();
-//        DBconnector db = new DBconnector();
-//        boolean ok = db.send(mb);
-//
-//        if (ok) {
-//
-//            JOptionPane.showMessageDialog(this, "가입이 완료되었습니다.");
-//            //dispose();
-//            return true;
-//
-//        } else {
-//
-//            JOptionPane.showMessageDialog(this, "가입이 정상적으로 처리되지 않았습니다.");
-//            return false;
-//        }
-//
-//    }//insertMember
 
     public MessageBox getViewData() {
 
-        //화면에서 사용자가 입력한 내용을 얻는다.
-        MessageBox mb = new MessageBox();
-        //dto에 담는다.
         String lecture = lectureCombo.getSelectedItem().toString();
         String student = studentCombo.getSelectedItem().toString();
         String purpose = purposeCombo.getSelectedItem().toString();
-        mb.setRid(rid);
-        mb.setSname(student);
-        mb.setLecturename(lecture);
-        mb.setPurposeString(purpose);
+        MessageBox rmb = new MessageBox();
 
-        return mb;
+        rmb.setRid(rid);
+        rmb.setSname(student);
+        rmb.setLecturename(lecture);
+        rmb.setPurposeString(purpose);
+        rmb.setDate(dateTime);
+
+        return rmb;
     }
 
     /**
@@ -158,8 +149,11 @@ public class SendMessagePanel extends javax.swing.JPanel {
         backButton = new javax.swing.JButton();
         send = new javax.swing.JButton();
 
-        jLabel1.setText("강의");
+        jLabel1.setFont(new java.awt.Font("굴림", 0, 20)); // NOI18N
+        jLabel1.setText("강의이름");
 
+        lectureCombo.setFont(new java.awt.Font("굴림", 0, 20)); // NOI18N
+        lectureCombo.setMaximumRowCount(30);
         lectureCombo.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 lectureComboActionPerformed(evt);
@@ -171,13 +165,14 @@ public class SendMessagePanel extends javax.swing.JPanel {
         jPanel1Layout.setHorizontalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel1Layout.createSequentialGroup()
-                .addGap(52, 52, 52)
-                .addComponent(jLabel1)
-                .addContainerGap(133, Short.MAX_VALUE))
-            .addGroup(jPanel1Layout.createSequentialGroup()
-                .addContainerGap()
-                .addComponent(lectureCombo, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addContainerGap())
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(jPanel1Layout.createSequentialGroup()
+                        .addGap(52, 52, 52)
+                        .addComponent(jLabel1))
+                    .addGroup(jPanel1Layout.createSequentialGroup()
+                        .addContainerGap()
+                        .addComponent(lectureCombo, javax.swing.GroupLayout.PREFERRED_SIZE, 194, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -189,7 +184,10 @@ public class SendMessagePanel extends javax.swing.JPanel {
                 .addContainerGap(39, Short.MAX_VALUE))
         );
 
-        jLabel2.setText("학생정보");
+        jLabel2.setFont(new java.awt.Font("굴림", 0, 20)); // NOI18N
+        jLabel2.setText("수강생 정보");
+
+        studentCombo.setFont(new java.awt.Font("굴림", 0, 20)); // NOI18N
 
         javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
         jPanel2.setLayout(jPanel2Layout);
@@ -198,7 +196,7 @@ public class SendMessagePanel extends javax.swing.JPanel {
             .addGroup(jPanel2Layout.createSequentialGroup()
                 .addGap(25, 25, 25)
                 .addComponent(jLabel2)
-                .addContainerGap(307, Short.MAX_VALUE))
+                .addContainerGap(239, Short.MAX_VALUE))
             .addGroup(jPanel2Layout.createSequentialGroup()
                 .addContainerGap()
                 .addComponent(studentCombo, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
@@ -213,7 +211,10 @@ public class SendMessagePanel extends javax.swing.JPanel {
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
+        jLabel3.setFont(new java.awt.Font("굴림", 0, 20)); // NOI18N
         jLabel3.setText("용무");
+
+        purposeCombo.setFont(new java.awt.Font("굴림", 0, 20)); // NOI18N
 
         javax.swing.GroupLayout jPanel3Layout = new javax.swing.GroupLayout(jPanel3);
         jPanel3.setLayout(jPanel3Layout);
@@ -235,9 +236,10 @@ public class SendMessagePanel extends javax.swing.JPanel {
                 .addComponent(jLabel3)
                 .addGap(38, 38, 38)
                 .addComponent(purposeCombo, javax.swing.GroupLayout.PREFERRED_SIZE, 76, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(73, Short.MAX_VALUE))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
+        homeButton.setFont(new java.awt.Font("굴림", 0, 20)); // NOI18N
         homeButton.setText("HOME");
         homeButton.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -245,6 +247,7 @@ public class SendMessagePanel extends javax.swing.JPanel {
             }
         });
 
+        backButton.setFont(new java.awt.Font("굴림", 0, 20)); // NOI18N
         backButton.setText("BACK");
         backButton.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -252,6 +255,7 @@ public class SendMessagePanel extends javax.swing.JPanel {
             }
         });
 
+        send.setFont(new java.awt.Font("굴림", 0, 20)); // NOI18N
         send.setText("보내기");
         send.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -286,30 +290,31 @@ public class SendMessagePanel extends javax.swing.JPanel {
         this.setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+            .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                    .addComponent(jPanel4, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addGroup(layout.createSequentialGroup()
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
                         .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addGap(18, 18, 18)
                         .addComponent(jPanel2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                         .addGap(18, 18, 18)
-                        .addComponent(jPanel3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                .addGap(27, 27, 27))
+                        .addComponent(jPanel3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(27, 27, 27))
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                        .addComponent(jPanel4, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addContainerGap())))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
                 .addGap(45, 45, 45)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
-                        .addComponent(jPanel2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                    .addComponent(jPanel3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(18, 18, 18)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
+                    .addComponent(jPanel2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(jPanel3, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jPanel4, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(26, Short.MAX_VALUE))
+                .addContainerGap(59, Short.MAX_VALUE))
         );
     }// </editor-fold>//GEN-END:initComponents
 
@@ -333,9 +338,18 @@ public class SendMessagePanel extends javax.swing.JPanel {
 
     private void sendActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_sendActionPerformed
         if (evt.getSource() == send) {
+            Date dt = new Date();
+            //System.out.println(dt.toString());
+            SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd, hh:mm:ss a");
+            dateTime = sdf.format(dt).toString();
+            System.out.println("누른 시간!" + sdf.format(dt).toString());
             if (sendMessage()) {
-            //if (insertMember()) {
+                //if (insertMember()) {
+                MainPanelManualConfiguired mp = new MainPanelManualConfiguired(iob);
+                iob.changePanel(mp);
                 System.out.println("sendMessage() 호출 종료");
+            } else {
+
             }
         }
     }//GEN-LAST:event_sendActionPerformed

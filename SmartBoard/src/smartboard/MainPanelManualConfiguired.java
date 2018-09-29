@@ -9,6 +9,7 @@ import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.ArrayList;
+import java.util.Calendar;
 import javax.swing.*;
 import javax.swing.border.EtchedBorder;
 
@@ -17,6 +18,7 @@ import javax.swing.border.EtchedBorder;
  * @author Shin
  */
 public class MainPanelManualConfiguired extends JPanel {
+
     int count = 0;
     Container ct;
     GridBagConstraints c;
@@ -26,10 +28,14 @@ public class MainPanelManualConfiguired extends JPanel {
     DBconnector db;
     Researcherinfo info;
     public int buttonNum;
+
     //String rname;
     ArrayList<String> rname = new ArrayList<String>();
     ArrayList<String> rstate = new ArrayList<String>();
     static ArrayList<Researcherinfo> allinfo = new ArrayList<>();
+    static ArrayList<Timetableinfo> alltimetableinfo = new ArrayList<>();
+    static ArrayList<CurrentStateinfo> allstate = new ArrayList<>();
+    JButton[] jbtn;
 
     /**
      * Creates new form MainPanel
@@ -37,7 +43,6 @@ public class MainPanelManualConfiguired extends JPanel {
     public MainPanelManualConfiguired() {
         this.setSize(800, 480);
         initComponents();
-
     }
 
     public MainPanelManualConfiguired(InOutBoard iob) {
@@ -66,6 +71,7 @@ public class MainPanelManualConfiguired extends JPanel {
         jLabel1 = new javax.swing.JLabel();
         namePanel = new javax.swing.JPanel();
         jLabel1.setText("연구원의 이름을 눌러주세요");
+        jLabel1.setFont(new Font("굴림", Font.PLAIN, 20));
         this.setSize(800, 480);
         this.setBorder(new EtchedBorder(EtchedBorder.LOWERED));
         //setLayout(gb);
@@ -95,25 +101,51 @@ public class MainPanelManualConfiguired extends JPanel {
 
     }
 
-    public void ButtonAdd() {
-        /**
-         * for(int i=0;i<RList.size();i++){
-         * button[i].setText(RList.get(i).getName()+"-"+RList.get(i).getState());
-         * }
-         */
-        db = new DBconnector();
-//        rname = db.getResearcherName();
-//        buttonNum = rname.size();
-//        JButton[] jbtn = new JButton[buttonNum];
-//////////////////////////////////////////////////////////////
-        allinfo = db.getResearcherInfo();
-        buttonNum = allinfo.size();
+    public void buttonSetText(int buttonNumber, String buttonText) {
+        //jbtn = new JButton[buttonNumber];
+        jbtn[buttonNumber].setText(buttonText);
+        System.out.println("mainpanel buttonSetText n:" + buttonNum + "/t:" + buttonText);
+        this.repaint();
+    }
 
-        JButton[] jbtn = new JButton[buttonNum];
+    public void ButtonAdd() {
+        //iob = InOutBoard.getInstance();
+
+        db = new DBconnector();
+        allinfo = db.getResearcherInfo();
+        alltimetableinfo = db.getTimetableInfo();
+        allstate = db.getCurrentstateinfo();
+        buttonNum = allinfo.size();
+        jbtn = new JButton[buttonNum];
+        //jbtn = InOutBoard.getInstance().button;
         for (int i = 0; i < buttonNum; i++) {
 
             namePanel.add(jbtn[i] = new JButton());
-            jbtn[i].setText(allinfo.get(i).getName() + " " + allinfo.get(i).getState());
+
+//            for (int j = 0; j < alltimetableinfo.size(); j++) {
+//                if (rid == alltimetableinfo.get(j).getRId()) {
+//                    classHour = alltimetableinfo.get(j).getClasstimeHour();
+//                    classMinute = alltimetableinfo.get(j).getClasstimeMin();
+//
+//                }
+//            }
+//            if (classHour == pHour && classMinute == pMinute) {
+//                jbtn[i].setText(allinfo.get(i).getName() + " " + "수업");
+//            } else {
+//                jbtn[i].setText(allinfo.get(i).getName() + " " + allinfo.get(i).getState());
+//            }
+            System.out.println("allstate size" + allstate.size());
+            for (int x = 0; x < allstate.size(); x++) {
+                if (allinfo.get(i).getStateid() == allstate.get(x).getStateId()) {
+                    System.out.println("allinfo" + allinfo.size() + "allstate" + allstate.size());
+                    System.out.println("setText:" + allinfo.get(i).getName() + " " + allstate.get(x).getState());
+                    String setText = allinfo.get(i).getName() + " " + allstate.get(x).getState();
+                    buttonSetText(i, setText);
+                    //jbtn[i].setText(allinfo.get(i).getName() + " " + allstate.get(x).getState());
+
+                }
+            }
+
             jbtn[i].setVisible(true);
             jbtn[i].setSize(20, 20);
             super.setVisible(true);
@@ -122,27 +154,7 @@ public class MainPanelManualConfiguired extends JPanel {
             jbtn[i].repaint();
             jbtn[i].addActionListener(new ResearcherButtonActionListener(jbtn, iob));
         }
-//////////////////////////////////////////////////////////////
 
-        //System.out.println("in Main Pannel : " + rname);
-//        for (int i = 0; i < buttonNum; i++) {
-//            //Researcherinfo info = new Researcherinfo(rname.get(i));
-////            Researcherinfo info=db.getResearInfo(rname.get(i));
-////            String[] state = new String[buttonNum];
-////            db.getResearInfo(rname.get(i));
-////            state[i]=db.getCurrentState(info.getState());
-//            
-//            namePanel.add(jbtn[i] = new JButton());
-////            jbtn[i].setText(rname.get(i)+""+state[i]);
-//            jbtn[i].setVisible(true);
-//            jbtn[i].setSize(20, 20);
-//            super.setVisible(true);
-//            jbtn[i].setPreferredSize(new Dimension(250, 120));
-//            jbtn[i].setFont(new Font("굴림", Font.PLAIN, 20));
-//            jbtn[i].repaint();
-//            jbtn[i].addActionListener(new ResearcherButtonActionListener(jbtn, iob));
-//
-//        }
     }
 
     public void layout(Component obj, int x, int y, int width, int height) {
@@ -153,7 +165,6 @@ public class MainPanelManualConfiguired extends JPanel {
         add(obj, c);
     }
 
-    // Variables declaration - do not modify                     
     private javax.swing.JLabel jLabel1;
     private javax.swing.JPanel namePanel;
 
@@ -161,10 +172,11 @@ public class MainPanelManualConfiguired extends JPanel {
     class ResearcherButtonActionListener implements ActionListener {
 
         JButton[] jbtn;
-        DBconnector db;
-        InOutBoard iob = null;
+
+        InOutBoard iob;
         MainPanelManualConfiguired mainpanel;
-        ArrayList <String> statearray = new ArrayList<>();
+        //ArrayList<String> statearray = new ArrayList<>();
+
         public ResearcherButtonActionListener(JButton[] jbtn, InOutBoard iob) {
             super();
             this.jbtn = jbtn;
@@ -173,40 +185,34 @@ public class MainPanelManualConfiguired extends JPanel {
 
         @Override
         public void actionPerformed(ActionEvent e) {
-           db = new DBconnector(); 
+            //db = new DBconnector(); 
+            //iob = InOutBoard.getInstance();
+            
             if (iob == null) {
                 System.out.println("IOB IS NULL");
                 return;
             }
-            
-            for(int j = 0; j<allinfo.size();j++){
-                statearray.add(allinfo.get(j).getState());
-            }
-             
+
+//            for (int j = 0; j < allinfo.size(); j++) {
+//                statearray.add(allinfo.get(j).getState());
+//            }
             for (int i = 0; i < buttonNum; i++) {
                 if (e.getSource().equals(jbtn[i])) {
-                    
+
                     String rname = allinfo.get(i).getName();
-                    
-                    
+
                     System.out.println("ResearcherButtonActionListener: rname is " + rname);
                     /**
-                     * 버튼을 계속 누르게 되면 연구원 상태가 디비에 저장된 현황만큼 변함 
-                    jbtn[i].setText(rname + "  " +statearray.get(count));
-                    count++;
-                    count = count%3;
-                  **/
+                     * 버튼을 계속 누르게 되면 연구원 상태가 디비에 저장된 현황만큼 변함
+                     * jbtn[i].setText(rname + " " +statearray.get(count));
+                     * count++; count = count%3;
+                     *
+                     */
                     iob.changePanel(new SendMessagePanel(iob, i));
                     break;
                 }
             }
-            /**
-             * for(JButton bt : jbtn){ if(e.getSource().equals(bt)){ String
-             * rname = info.getName();
-             * System.out.println("ResearcherButtonActionListener: rname is
-             * "+rname); iob.changePanel(new SendMessage(iob, rname)); break; }
-             * }
-             */
+
             System.out.println("THERE IS BUTTON ACTION LISTENER");
         }
 

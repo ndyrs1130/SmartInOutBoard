@@ -3,16 +3,17 @@
     <editor-bookmarks xmlns="http://www.netbeans.org/ns/editor-bookmarks/2" lastBookmarkId="0"/>
     <open-files xmlns="http://www.netbeans.org/ns/projectui-open-files/2">
         <group>
-            <file>file:/F:/SmartInOutBoard/SmartBoard/src/smartboard/DBconnector.java</file>
-            <file>file:/F:/SmartInOutBoard/SmartBoard/src/smartboard/Purposeinfo.java</file>
-            <file>file:/F:/SmartInOutBoard/SmartBoard/src/smartboard/SendMessagePanel.java</file>
-            <file>file:/F:/SmartInOutBoard/SmartBoard/src/smartboard/Researcherinfo.java</file>
-            <file>file:/F:/SmartInOutBoard/SmartBoard/src/smartboard/Lectureinfo.java</file>
-            <file>file:/F:/SmartInOutBoard/SmartBoard/src/smartboard/MainPanelManualConfiguired.java</file>
-            <file>file:/F:/SmartInOutBoard/SmartBoard/src/smartboard/InOutBoard.java</file>
-            <file>file:/F:/SmartInOutBoard/SmartBoard/src/smartboard/StudentInfo.java</file>
-            <file>file:/F:/SmartInOutBoard/SmartBoard/src/smartboard/MessageBox.java</file>
-            <file>file:/F:/SmartInOutBoard/SmartBoard/src/smartboard/Smartboard.java</file>
+            <file>file:/F:/development/SmartInOutBoard/SmartInOutBoard/SmartBoard/src/ExternelNetwork/ExcelDataResource.java</file>
+            <file>file:/F:/development/SmartInOutBoard/SmartInOutBoard/SmartBoard/src/ExternelNetwork/MessageCheckResource.java</file>
+            <file>file:/F:/development/SmartInOutBoard/SmartInOutBoard/SmartBoard/src/ExternelNetwork/MessageService.java</file>
+            <file>file:/F:/development/SmartInOutBoard/SmartInOutBoard/SmartBoard/src/ExternelNetwork/CurrentStateService.java</file>
+            <file>file:/F:/development/SmartInOutBoard/SmartInOutBoard/SmartBoard/src/ExternelNetwork/PixelResource.java</file>
+            <file>file:/F:/development/SmartInOutBoard/SmartInOutBoard/SmartBoard/src/smartboard/ServerMinT.java</file>
+            <file>file:/F:/development/SmartInOutBoard/SmartInOutBoard/SmartBoard/src/smartboard/SendMessagePanel.java</file>
+            <file>file:/F:/development/SmartInOutBoard/SmartInOutBoard/SmartBoard/src/smartboard/MainPanelManualConfiguired.java</file>
+            <file>file:/F:/development/SmartInOutBoard/SmartInOutBoard/SmartBoard/src/ExternelNetwork/LoginResource.java</file>
+            <file>file:/F:/development/SmartInOutBoard/SmartInOutBoard/SmartBoard/src/smartboard/InOutBoard.java</file>
+            <file>file:/F:/development/SmartInOutBoard/SmartInOutBoard/SmartBoard/src/smartboard/DBconnector.java</file>
         </group>
     </open-files>
 </project-private>

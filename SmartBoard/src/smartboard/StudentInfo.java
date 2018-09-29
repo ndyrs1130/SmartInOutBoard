@@ -12,6 +12,11 @@ public class StudentInfo {
     int snumber;
     String sname;
     int lectureid;
+    public StudentInfo(){
+        this.sname = "";
+        this.snumber = 0;
+        this.lectureid = 0;
+    }
     public StudentInfo(int snumber,String sname,int lectureid){
         this.snumber = snumber;
         this.sname = sname;
@@ -25,5 +30,14 @@ public class StudentInfo {
     }
     public int getLectureID(){
         return lectureid;
+    }
+    public void setSNumber(int n){
+        this.snumber = n;
+    }
+    public void setSName(String n){
+        this.sname = n;
+    }
+    public void setLectureID(int i){
+        this.lectureid = i;
     }
 }

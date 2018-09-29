@@ -13,7 +13,7 @@ public class Purposeinfo {
     int rid;
     int purid;
     String content;
-    public Purposeinfo(int rid, int purid,String content){
+    public Purposeinfo(int purid, int rid,String content){
         this.rid = rid;
         this.purid = purid;
         this.content = content;

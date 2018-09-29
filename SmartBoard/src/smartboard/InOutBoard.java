@@ -5,6 +5,7 @@
  */
 package smartboard;
 
+import MinTFramework.MinT;
 import java.awt.Cursor;
 import java.awt.GraphicsDevice;
 import java.awt.GraphicsEnvironment;
@@ -23,20 +24,26 @@ import jdk.nashorn.internal.objects.NativeRegExp;
  */
 public class InOutBoard extends JFrame {
 
+    static InOutBoard inoutboard;
     //protected MainPanel p1 = new MainPanel(this);
     protected MainPanelManualConfiguired p1 = new MainPanelManualConfiguired(this);
-    ArrayList<Researcherinfo> researcherinfolist = new ArrayList<>();
-    ArrayList<StudentInfo> studentinfolist = new ArrayList<>();
-    ArrayList<Lectureinfo> lectureinfolist = new ArrayList<>();
-    ArrayList<Purposeinfo> purposeinfolist = new ArrayList<>();
+    public ArrayList<Researcherinfo> researcherinfolist = new ArrayList<>();
+    public ArrayList<StudentInfo> studentinfolist = new ArrayList<>();
+    public ArrayList<Lectureinfo> lectureinfolist = new ArrayList<>();
+    public ArrayList<Purposeinfo> purposeinfolist = new ArrayList<>();
+    public ArrayList<MessageBox> messageboxlist = new ArrayList<>();
+    public ArrayList<Timetableinfo> timetablelist = new ArrayList<>();
+    public ArrayList<CurrentStateinfo> currentstatelist = new ArrayList<>();
+    public JButton[] button;
    
     private GraphicsDevice device;
-    DBconnector db = new DBconnector();
+    DBconnector db;
 
     /**
      * Creates new form NewJFrame
      */
     public InOutBoard() {
+        this.inoutboard = this;
         initComponents();
         databaseInit();
 //        GraphicsEnvironment ge = GraphicsEnvironment.getLocalGraphicsEnvironment();
@@ -45,30 +52,84 @@ public class InOutBoard extends JFrame {
         this.setVisible(true);
         this.setSize(800, 480);
         this.getContentPane().removeAll();
-        
-        JPanel p = new JPanel(new GridLayout(3, 3, 3, 3));
-        p.setSize(800, 480);
-        javax.swing.JButton bt[] = new JButton[8];
-        for(int i=0;i<8;i++){
-            bt[i] = new JButton(i+" Button");
-            p.add(bt[i]);
-        }
-        
+
+//        JPanel p = new JPanel(new GridLayout(3, 3, 3, 3));
+//        p.setSize(800, 480);
+//        javax.swing.JButton bt[] = new JButton[8];
+//        for (int i = 0; i < 8; i++) {
+//            bt[i] = new JButton(i + " Button");
+//            //p.add(bt[i]);
+//        }
+
         //this.getContentPane().add(p);
         this.getContentPane().add(p1);
         this.revalidate();
         this.repaint();
+
     }
-    
-     private void databaseInit(){
-         researcherinfolist = db.getResearcherInfo();
-         studentinfolist = db.getStudentInfo();
-         lectureinfolist = db.getLectureList();
-         purposeinfolist = db.getPurposeinfo();
-        // System.out.println(researcherinfolist);
-         
-     }
-     public void changePanel(JPanel p) {
+
+    public static InOutBoard getInstance() {
+        return inoutboard;
+    }
+
+    public synchronized ArrayList<StudentInfo> getStudentList() {
+        return this.studentinfolist;
+    }
+
+    public synchronized ArrayList<Lectureinfo> getLectureInfoList() {
+        return this.lectureinfolist;
+    }
+    public void buttonSetText(int rid,String text){
+       p1.buttonSetText(rid, text);
+    }
+    public boolean updateMSGcheck(int msgid) {
+        boolean ok = db.updateMSGcheck(msgid);
+        if (ok) {
+            for (MessageBox tmp : messageboxlist) {
+                if (tmp.msgid == msgid) {
+                    tmp.setMsgcheck(1);
+                }
+                
+            }
+        }
+        return ok;
+    }
+
+    public boolean updateCurrentState(int rid,int csid) {
+        boolean ok = db.updateCurrentState(rid,csid);
+        if (ok) {
+            for (Researcherinfo rinfo : researcherinfolist) {
+                if(rinfo.rid==rid) {
+                    rinfo.setStateid(csid);
+                }
+            }
+        }
+        return ok;
+    }
+
+    private void databaseInit() {
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                db = new DBconnector();
+                researcherinfolist = db.getResearcherInfo();
+                studentinfolist = db.getStudentInfo();
+                lectureinfolist = db.getLectureList();
+                purposeinfolist = db.getPurposeinfo();
+                messageboxlist = db.getMessageBoxinfo();
+                timetablelist = db.getTimetableInfo();
+                currentstatelist = db.getCurrentstateinfo();
+                // System.out.println(researcherinfolist);
+            }
+        }).start();
+    }
+
+    public void refleshAllList() {
+        databaseInit();
+    }
+ 
+
+    public void changePanel(JPanel p) {
 
         this.getContentPane().removeAll();
         this.getContentPane().add(p);
@@ -153,16 +214,19 @@ public class InOutBoard extends JFrame {
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
-                
-                InOutBoard ib = new InOutBoard();
-//                Toolkit tk = Toolkit.getDefaultToolkit();
-//                Cursor invisCursor = tk.createCustomCursor(tk.createImage(""), new Point(), null);
-//                ib.setCursor(invisCursor);
-//                ib.getGlassPane().setVisible(true);
-//                ib.setUndecorated(true);
-//                ib.setVisible(true);
+                InOutBoard iob = new InOutBoard();
+                ServerMinT smint = new ServerMinT();
+
+                smint.Start();
+                Toolkit tk = Toolkit.getDefaultToolkit();
+                Cursor invisCursor = tk.createCustomCursor(tk.createImage(""), new Point(), null);
+//                iob.setCursor(invisCursor);
+//                iob.getGlassPane().setVisible(true);
+//                iob.setUndecorated(true);
+//                iob.setVisible(true);
             }
         });
+
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables

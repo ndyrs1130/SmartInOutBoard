@@ -12,17 +12,20 @@ import javax.swing.JPanel;
  * @author Shin
  */
 public class NewJFrame extends javax.swing.JFrame {
-    public final int HEIGHT = 450;
-    public final int WIDTH = 700;
+
+    public final int HEIGHT = 200;
+    public final int WIDTH = 520;
+
     /**
      * Creates new form NewJFrame
      */
     public NewJFrame() {
         initComponents();
         this.setSize(WIDTH, HEIGHT);
-        LoginPanel lp=new LoginPanel(this);
+        LoginPanel lp = new LoginPanel(this);
         this.add(lp);
     }
+
     public void changePanel(JPanel p) {
         this.getContentPane().removeAll();
         this.getContentPane().add(p);
@@ -90,6 +93,12 @@ public class NewJFrame extends javax.swing.JFrame {
             public void run() {
                 NewJFrame mainf = new NewJFrame();
                 mainf.setVisible(true);
+                try {
+                    PCMinT mint = new PCMinT();
+                    mint.Start();
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
             }
         });
     }
